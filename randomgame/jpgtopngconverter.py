@@ -7,9 +7,11 @@ from PIL import Image
 try:
     _from = sys.argv[1]
     _to = sys.argv[2]
+    _format = sys.argv[3]
 except:
     _from = ''
     _to = ''
+    _format = ''
 # check is new / exist folder
 class Converter():
     def __init__(self,folder_from,folder_to,format):
@@ -52,9 +54,9 @@ class Converter():
         
     def _image_convert_processor(self,filename):
         try:
-            img = Image.open(self.folder_from + '\\' + filename)
-            new_file = path.splitext(filename)[0] + '.png'
-            img.save(self.folder_to + '\\' + new_file,self.format)
+            img = Image.open(f'{self.folder_from}\{filename}')
+            new_file = path.splitext(filename)[0] + self.format
+            img.save(f'{self.folder_to}\{new_file}.{self.format}')
         except:
             print("error")
             
@@ -65,14 +67,15 @@ class Converter():
 # loop through pokedex
 #convert to png
 #save to new folder
-def Main(pathFrom,pathTo):
-    imgcnv = Converter(pathFrom,pathTo,'png')
+def Main(pathFrom,pathTo,format):
+    imgcnv = Converter(pathFrom,pathTo,format)
     imgcnv.Run_Image_Converter()
 
 if __name__ == "__main__":
-    if(len(_from) > 0 and len(_to) > 0):
-       Main(_from,_to)
+    if(len(_from) > 0 and len(_to) > 0) and len(_format) > 0:
+       Main(_from,_to,_format)
     else:
        _from = input("Please provide a path from: ")
        _to = input("Please provide a path to: ")
-       Main(_from,_to)
+       _format = input("Please provide a format type: ")
+       Main(_from,_to,_format)
